@@ -2,14 +2,20 @@ const botonGenerar = document.getElementById("btn-generar");
 const valorB = document.getElementById("valor-b");
 const valorC = document.getElementById("valor-c");
 const mensaje = document.getElementById("mensaje");
-
 const tarjetaLineal = document.getElementById("tarjeta-lineal");
 const tarjetaAfin = document.getElementById("tarjeta-afin");
 const estadoLineal = document.getElementById("estado-lineal");
 const estadoAfin = document.getElementById("estado-afin");
 
+const canvas = document.getElementById("plano-cartesiano");
+const ctx = canvas.getContext("2d");
+const expresionGrafica = document.getElementById("expresion-grafica");
+const ayudaGrafica = document.getElementById("ayuda-grafica");
+
+let funcionActual = null;
+let escala = 10;
+
 function numeroAleatorio() {
-  // Math.random() permite obtener enteros entre -3 y 3, incluyendo ambos extremos.
   return Math.floor(Math.random() * 7) - 3;
 }
 
@@ -26,12 +32,14 @@ function generarFuncion() {
 
   valorB.textContent = b;
   valorC.textContent = c;
-
   limpiarClasificacion();
 
-  // Si los dos coeficientes son cero, no se muestra ninguna clasificación.
   if (b === 0 && c === 0) {
     mensaje.textContent = "b y c son 0: no se genera ninguna función.";
+    funcionActual = null;
+    expresionGrafica.textContent = "f(x) = —";
+    ayudaGrafica.textContent = "No se dibuja ninguna función porque b y c son 0.";
+    dibujarPlano();
     return;
   }
 
@@ -45,87 +53,7 @@ function generarFuncion() {
     const signo = c > 0 ? "+" : "−";
     mensaje.textContent = `La función es afín: f(x) = ${b}x ${signo} ${Math.abs(c)}.`;
   }
-}
 
-botonGenerar.addEventListener("click", generarFuncion);
-
-const selectorArchivo = document.getElementById("archivo-ggb");
-const nombreArchivo = document.getElementById("nombre-archivo");
-
-selectorArchivo.addEventListener("change", () => {
-  const archivo = selectorArchivo.files[0];
-
-  if (!archivo) {
-    nombreArchivo.textContent = "Ningún archivo seleccionado";
-    return;
-  }
-
-  nombreArchivo.textContent = archivo.name;
-});
-
-
-// Plano cartesiano: dibuja automáticamente la recta de la función generada.
-const canvas = document.getElementById("plano-cartesiano");
-const contexto = canvas.getContext("2d");
-const expresionGrafica = document.getElementById("expresion-grafica");
-const ayudaGrafica = document.getElementById("ayuda-grafica");
-let funcionActual = null;
-
-function dibujarPlano() {
-  const ancho = canvas.clientWidth;
-  const alto = canvas.clientHeight;
-  const dpi = window.devicePixelRatio || 1;
-  canvas.width = Math.round(ancho * dpi);
-  canvas.height = Math.round(alto * dpi);
-  contexto.setTransform(dpi, 0, 0, dpi, 0, 0);
-
-  const margen = 34, min = -5, max = 5;
-  const px = x => margen + ((x - min) / (max - min)) * (ancho - margen * 2);
-  const py = y => alto - margen - ((y - min) / (max - min)) * (alto - margen * 2);
-
-  contexto.clearRect(0, 0, ancho, alto);
-  contexto.fillStyle = "#fbfefd";
-  contexto.fillRect(0, 0, ancho, alto);
-
-  contexto.strokeStyle = "#e4eeea";
-  contexto.lineWidth = 1;
-  for (let n = -5; n <= 5; n++) {
-    contexto.beginPath(); contexto.moveTo(px(n), margen); contexto.lineTo(px(n), alto - margen); contexto.stroke();
-    contexto.beginPath(); contexto.moveTo(margen, py(n)); contexto.lineTo(ancho - margen, py(n)); contexto.stroke();
-  }
-
-  contexto.strokeStyle = "#385b53";
-  contexto.lineWidth = 1.8;
-  contexto.beginPath();
-  contexto.moveTo(px(min), py(0)); contexto.lineTo(px(max), py(0));
-  contexto.moveTo(px(0), py(min)); contexto.lineTo(px(0), py(max));
-  contexto.stroke();
-
-  contexto.fillStyle = "#71817c";
-  contexto.font = "11px Arial";
-  contexto.textAlign = "center"; contexto.textBaseline = "top";
-  for (let n = -5; n <= 5; n++) if (n !== 0) contexto.fillText(String(n), px(n), py(0) + 7);
-  contexto.textAlign = "right"; contexto.textBaseline = "middle";
-  for (let n = -5; n <= 5; n++) if (n !== 0) contexto.fillText(String(n), px(0) - 7, py(n));
-  contexto.textAlign = "left"; contexto.textBaseline = "top";
-  contexto.fillText("x", px(max) - 12, py(0) + 8);
-  contexto.fillText("y", px(0) + 8, py(max) + 4);
-
-  if (funcionActual) {
-    const { b, c } = funcionActual;
-    contexto.save();
-    contexto.beginPath(); contexto.rect(margen, margen, ancho - 2*margen, alto - 2*margen); contexto.clip();
-    contexto.strokeStyle = "#16866b"; contexto.lineWidth = 3; contexto.beginPath();
-    for (let i = 0; i <= 400; i++) {
-      const x = min + (max - min) * i / 400;
-      const y = b * x + c;
-      if (i === 0) contexto.moveTo(px(x), py(y)); else contexto.lineTo(px(x), py(y));
-    }
-    contexto.stroke(); contexto.restore();
-  }
-}
-
-function actualizarGrafica(b, c) {
   funcionActual = { b, c };
   const signo = c > 0 ? "+" : "−";
   expresionGrafica.textContent = c === 0
@@ -135,34 +63,120 @@ function actualizarGrafica(b, c) {
   dibujarPlano();
 }
 
-function borrarGrafica() {
-  funcionActual = null;
-  expresionGrafica.textContent = "f(x) = —";
-  ayudaGrafica.textContent = "No se dibuja ninguna función porque b y c son 0.";
-  dibujarPlano();
+function dibujarPlano() {
+  const ancho = canvas.clientWidth;
+  const alto = canvas.clientHeight;
+  if (!ancho || !alto) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.round(ancho * dpr);
+  canvas.height = Math.round(alto * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const centroX = ancho / 2;
+  const centroY = alto / 2;
+  const pixelesPorUnidad = Math.min(ancho, alto) / escala;
+  const px = x => centroX + x * pixelesPorUnidad;
+  const py = y => centroY - y * pixelesPorUnidad;
+
+  ctx.clearRect(0, 0, ancho, alto);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, ancho, alto);
+
+  // Cuadrícula principal y secundaria al estilo de un graficador.
+  const paso = escala <= 8 ? 2 : 1;
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "#e8eeeb";
+  for (let x = Math.ceil(-centroX / pixelesPorUnidad); x <= Math.floor((ancho - centroX) / pixelesPorUnidad); x += paso) {
+    ctx.beginPath(); ctx.moveTo(px(x), 0); ctx.lineTo(px(x), alto); ctx.stroke();
+  }
+  for (let y = Math.ceil(-centroY / pixelesPorUnidad); y <= Math.floor((alto - centroY) / pixelesPorUnidad); y += paso) {
+    ctx.beginPath(); ctx.moveTo(0, py(y)); ctx.lineTo(ancho, py(y)); ctx.stroke();
+  }
+
+  // Ejes cartesianos.
+  ctx.strokeStyle = "#394b46";
+  ctx.lineWidth = 1.7;
+  ctx.beginPath();
+  ctx.moveTo(0, centroY); ctx.lineTo(ancho, centroY);
+  ctx.moveTo(centroX, 0); ctx.lineTo(centroX, alto);
+  ctx.stroke();
+
+  // Marcas, números y nombres de los ejes.
+  ctx.fillStyle = "#596b65";
+  ctx.font = "12px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  const xInicio = Math.ceil(-centroX / pixelesPorUnidad);
+  const xFin = Math.floor((ancho - centroX) / pixelesPorUnidad);
+  for (let x = xInicio; x <= xFin; x++) {
+    if (x !== 0 && x % paso === 0) {
+      ctx.beginPath(); ctx.moveTo(px(x), centroY - 4); ctx.lineTo(px(x), centroY + 4); ctx.stroke();
+      ctx.fillText(String(x), px(x), centroY + 7);
+    }
+  }
+  ctx.textAlign = "right";
+  ctx.textBaseline = "middle";
+  const yInicio = Math.ceil(-centroY / pixelesPorUnidad);
+  const yFin = Math.floor(centroY / pixelesPorUnidad);
+  for (let y = yInicio; y <= yFin; y++) {
+    if (y !== 0 && y % paso === 0) {
+      ctx.beginPath(); ctx.moveTo(centroX - 4, py(y)); ctx.lineTo(centroX + 4, py(y)); ctx.stroke();
+      ctx.fillText(String(y), centroX - 8, py(y));
+    }
+  }
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillText("x", ancho - 17, centroY + 9);
+  ctx.fillText("y", centroX + 9, 5);
+  ctx.textAlign = "right";
+  ctx.textBaseline = "top";
+  ctx.fillText("0", centroX - 8, centroY + 7);
+
+  // Recta y punto de intersección con el eje Y.
+  if (funcionActual) {
+    const { b, c } = funcionActual;
+    const xIzq = (0 - centroX) / pixelesPorUnidad;
+    const xDer = (ancho - centroX) / pixelesPorUnidad;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, ancho, alto);
+    ctx.clip();
+    ctx.strokeStyle = "#16866b";
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.moveTo(px(xIzq), py(b * xIzq + c));
+    ctx.lineTo(px(xDer), py(b * xDer + c));
+    ctx.stroke();
+
+    ctx.fillStyle = "#16866b";
+    ctx.beginPath();
+    ctx.arc(px(0), py(c), 5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
 }
 
+document.getElementById("zoom-mas").addEventListener("click", () => {
+  escala = Math.max(4, escala - 2);
+  dibujarPlano();
+});
+document.getElementById("zoom-menos").addEventListener("click", () => {
+  escala = Math.min(30, escala + 2);
+  dibujarPlano();
+});
+document.getElementById("zoom-reset").addEventListener("click", () => {
+  escala = 10;
+  dibujarPlano();
+});
+
+botonGenerar.addEventListener("click", generarFuncion);
 window.addEventListener("resize", dibujarPlano);
 dibujarPlano();
 
-// Integra la gráfica con el botón generador ya definido.
-const generarFuncionConGrafica = generarFuncion;
-generarFuncion = function () {
-  generarFuncionConGrafica();
-  const b = Number(valorB.textContent);
-  const c = Number(valorC.textContent);
-  if (b === 0 && c === 0) borrarGrafica();
-  else actualizarGrafica(b, c);
-};
-
-
-// El botón también actualiza el plano después de generar los nuevos coeficientes.
-botonGenerar.addEventListener("click", () => {
-  const bActual = Number(valorB.textContent);
-  const cActual = Number(valorC.textContent);
-  if (bActual === 0 && cActual === 0) {
-    borrarGrafica();
-  } else {
-    actualizarGrafica(bActual, cActual);
-  }
+const selectorArchivo = document.getElementById("archivo-ggb");
+const nombreArchivo = document.getElementById("nombre-archivo");
+selectorArchivo.addEventListener("change", () => {
+  const archivo = selectorArchivo.files[0];
+  nombreArchivo.textContent = archivo ? archivo.name : "Ningún archivo seleccionado";
 });
