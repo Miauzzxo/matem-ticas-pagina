@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Configuración de idioma, pantalla y título de la página. -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clasificador de funciones</title>
+  <!-- Conectamos el archivo de estilos y el JavaScript externo. -->
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
+  <!-- Contenedor principal. -->
   <main class="contenedor">
     <header class="encabezado">
       <span class="etiqueta">MATEMÁTICAS · FUNCIONES ALGEBRAICAS</span>
@@ -15,20 +18,13 @@
       <p>Genera dos coeficientes y descubre qué tipo de función se forma.</p>
     </header>
 
+    <!-- Generador de los coeficientes b y c. -->
     <section class="panel-generador">
       <h2>Generador de coeficientes</h2>
       <div class="coeficientes">
-        <div class="coeficiente">
-          <span class="letra">b</span>
-          <span class="descripcion">Pendiente</span>
-          <output id="valor-b">—</output>
-        </div>
-        <div class="signo">+</div>
-        <div class="coeficiente">
-          <span class="letra">c</span>
-          <span class="descripcion">Término independiente</span>
-          <output id="valor-c">—</output>
-        </div>
+        <div class="coeficiente"><span class="letra">b</span><span class="descripcion">Pendiente</span><output id="valor-b">—</output></div>
+        <span class="signo">+</span>
+        <div class="coeficiente"><span class="letra">c</span><span class="descripcion">Término independiente</span><output id="valor-c">—</output></div>
       </div>
       <p class="formula">f(x) = bx + c</p>
       <button id="btn-generar" type="button">Generar valores</button>
@@ -36,74 +32,48 @@
       <p id="mensaje" class="mensaje" aria-live="polite">Presiona el botón para comenzar.</p>
     </section>
 
+    <!-- Tarjetas informativas de los tipos de función. -->
     <section class="resultados" aria-label="Clasificación de la función">
       <article class="tarjeta" id="tarjeta-lineal">
-        <div class="tarjeta-cabecera">
-          <h2>Función lineal</h2>
-          <span class="estado" id="estado-lineal">En espera</span>
-        </div>
+        <div class="tarjeta-cabecera"><h2>Función lineal</h2><span class="estado" id="estado-lineal">En espera</span></div>
         <p class="formula-tarjeta">f(x) = bx</p>
-        <ul>
-          <li>Su término independiente es c = 0.</li>
-          <li>Es una línea recta que pasa por el origen (0, 0).</li>
-          <li>Si b es positivo, es creciente; si b es negativo, es decreciente.</li>
-        </ul>
+        <ul><li>c = 0 y b ≠ 0.</li><li>Pasa por el origen (0, 0).</li><li>Si b es positivo, es creciente; si es negativo, decreciente.</li></ul>
       </article>
       <article class="tarjeta" id="tarjeta-afin">
-        <div class="tarjeta-cabecera">
-          <h2>Función afín</h2>
-          <span class="estado" id="estado-afin">En espera</span>
-        </div>
+        <div class="tarjeta-cabecera"><h2>Función afín</h2><span class="estado" id="estado-afin">En espera</span></div>
         <p class="formula-tarjeta">f(x) = bx + c</p>
-        <ul>
-          <li>Su término independiente es c ≠ 0.</li>
-          <li>Corta el eje Y en el punto (0, c).</li>
-          <li>Su inclinación depende del valor de b.</li>
-          <li>Se desplaza verticalmente c unidades respecto de f(x) = bx.</li>
-        </ul>
+        <ul><li>b ≠ 0 y c ≠ 0.</li><li>Corta el eje Y en (0, c).</li><li>Su inclinación depende de b.</li></ul>
+      </article>
+      <article class="tarjeta" id="tarjeta-constante">
+        <div class="tarjeta-cabecera"><h2>Función constante</h2><span class="estado" id="estado-constante">En espera</span></div>
+        <p class="formula-tarjeta">f(x) = c</p>
+        <ul><li>b = 0 y c ≠ 0.</li><li>Su valor no cambia aunque cambie x.</li><li>Su gráfica es una recta horizontal en y = c.</li></ul>
       </article>
     </section>
 
+    <!-- Zona del plano cartesiano y controles de zoom. -->
     <section class="panel-grafica">
       <div class="grafica-cabecera">
-        <div>
-          <h2>Vista gráfica</h2>
-          <p>Representación en el plano cartesiano</p>
-        </div>
+        <div><h2>Vista gráfica</h2><p>Representación en el plano cartesiano</p></div>
         <span id="expresion-grafica" class="expresion-grafica">f(x) = —</span>
       </div>
-
       <div class="barra-herramientas">
-        <span class="herramienta-info"> <span class="punto-color"></span> Función generada</span>
+        <span class="herramienta-info"><span class="punto-color"></span> Función generada</span>
         <div class="controles-zoom">
           <button type="button" id="zoom-menos" aria-label="Alejar">−</button>
           <button type="button" id="zoom-mas" aria-label="Acercar">+</button>
           <button type="button" id="zoom-reset">Restablecer vista</button>
         </div>
       </div>
-
-      <div class="lienzo-contenedor">
-        <canvas id="plano-cartesiano" aria-label="Plano cartesiano con la gráfica de la función generada"></canvas>
-      </div>
-      <div class="grafica-pie">
-        <span id="ayuda-grafica">Esperando valores para dibujar la gráfica.</span>
-        <span class="coordenadas">Ejes: x, y</span>
-      </div>
+      <div class="lienzo-contenedor"><canvas id="plano-cartesiano" aria-label="Gráfica de la función"></canvas></div>
+      <div class="grafica-pie"><span id="ayuda-grafica">Esperando valores para dibujar la gráfica.</span><span>Ejes: x, y</span></div>
     </section>
 
+    <!-- Enlace de GeoGebra y selector de archivo .ggb. -->
     <section class="panel-extra">
-      <div>
-        <h2>Prueba tu función en GeoGebra</h2>
-        <p>Abre GeoGebra Clásico y escribe la expresión que aparece en el resultado.</p>
-        <a class="enlace" href="https://www.geogebra.org/classic" target="_blank" rel="noopener noreferrer">Abrir GeoGebra Clásico ↗</a>
-      </div>
-      <div class="subida">
-        <label for="archivo-ggb">Seleccionar archivo .ggb</label>
-        <input id="archivo-ggb" type="file" accept=".ggb">
-        <span id="nombre-archivo">Ningún archivo seleccionado</span>
-      </div>
+      <div><h2>Prueba tu función en GeoGebra</h2><p>Abre GeoGebra Clásico y escribe la expresión generada.</p><a class="enlace" href="https://www.geogebra.org/classic" target="_blank" rel="noopener noreferrer">Abrir GeoGebra Clásico ↗</a></div>
+      <div class="subida"><label for="archivo-ggb">Seleccionar archivo .ggb</label><input id="archivo-ggb" type="file" accept=".ggb"><span id="nombre-archivo">Ningún archivo seleccionado</span></div>
     </section>
-
     <footer>Proyecto de Matemáticas y Programación · Clasificador de funciones</footer>
   </main>
 </body>
