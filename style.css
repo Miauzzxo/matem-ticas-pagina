@@ -1,35 +1,33 @@
+/* 1. Ajustes generales y colores principales del sitio. */
 * { box-sizing: border-box; }
-
 :root {
   --verde-marino: #0b3d3b;
   --verde-profundo: #082f30;
-  --verde-claro: #d9eee8;
   --menta: #a8dfcb;
   --texto: #183532;
-  --blanco: #ffffff;
+  --blanco: #fff;
 }
 
+/* Fondo verde marino, tipografía y espaciado general. */
 body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 36px 18px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--texto);
+  margin: 0; min-height: 100vh; padding: 36px 18px;
+  font-family: Arial, Helvetica, sans-serif; color: var(--texto);
   background: linear-gradient(145deg, #0b3d3b, #12645b);
 }
-
 .contenedor { width: min(1080px, 100%); margin: 0 auto; }
+
+/* 2. Encabezado del proyecto. */
 .encabezado { color: var(--blanco); margin-bottom: 25px; }
 .etiqueta { color: var(--menta); font-size: 12px; font-weight: 700; letter-spacing: 2px; }
 h1 { margin: 10px 0 8px; font-size: clamp(30px, 5vw, 43px); }
 .encabezado p { margin: 0; color: #d0e5df; line-height: 1.5; }
 
+/* Apariencia compartida de las tarjetas blancas. */
 .panel-generador, .tarjeta, .panel-extra, .panel-grafica {
-  background: var(--blanco);
-  border-radius: 17px;
-  box-shadow: 0 12px 30px #06292755;
+  background: var(--blanco); border-radius: 17px; box-shadow: 0 12px 30px #06292755;
 }
 
+/* 3. Panel donde se muestran los coeficientes. */
 .panel-generador { padding: 26px; text-align: center; }
 .panel-generador h2 { font-size: 21px; margin-top: 0; }
 .coeficientes { display: flex; align-items: center; justify-content: center; gap: 22px; margin: 24px 0 10px; }
@@ -41,20 +39,19 @@ h1 { margin: 10px 0 8px; font-size: clamp(30px, 5vw, 43px); }
 .descripcion { margin: 5px 0 10px; color: #617873; font-size: 12px; }
 output { color: var(--verde-profundo); font-size: 35px; font-weight: 700; }
 .signo { color: #65988b; font-size: 26px; font-weight: 700; }
-.formula, .formula-tarjeta { font-family: Georgia, "Times New Roman", serif; font-size: 21px; font-style: italic; }
-button {
-  border: 0; border-radius: 9px; padding: 11px 17px; cursor: pointer;
-  color: #073331; background: var(--menta); font-weight: 700;
-  transition: background .15s ease, transform .15s ease;
-}
+.formula, .formula-tarjeta { font: italic 21px Georgia, "Times New Roman", serif; }
+
+/* Estilo y efecto de los botones. */
+button { border: 0; border-radius: 9px; padding: 11px 17px; cursor: pointer; color: #073331; background: var(--menta); font-weight: 700; transition: .15s; }
 button:hover { background: #8ed2b9; transform: translateY(-1px); }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #e2a93b; outline-offset: 3px; }
 #btn-generar { margin-top: 8px; padding: 13px 28px; font-size: 15px; border-radius: 10px; }
 .rango { margin: 13px 0 5px; color: #70847f; font-size: 12px; }
 .mensaje { min-height: 20px; margin-bottom: 0; color: #28675b; font-size: 14px; font-weight: 700; }
 
-.resultados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
-.tarjeta { padding: 22px; border: 2px solid transparent; opacity: .58; transition: opacity .2s ease, border-color .2s ease; }
+/* 4. Tarjetas que explican las funciones lineal, afín y constante. */
+.resultados { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 20px; }
+.tarjeta { padding: 22px; border: 2px solid transparent; opacity: .58; transition: opacity .2s, border-color .2s; }
 .tarjeta.activa { border-color: #77c6a9; opacity: 1; }
 .tarjeta-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .tarjeta h2 { margin: 0; color: var(--verde-profundo); font-size: 19px; }
@@ -63,32 +60,24 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .formula-tarjeta { color: #367a68; }
 .tarjeta ul { padding-left: 19px; margin-bottom: 0; line-height: 1.6; font-size: 14px; }
 
-/* Gráfica amplia, inspirada en la distribución visual de GeoGebra */
+/* 5. Panel del gráfico, cuadrícula y herramientas de zoom. */
 .panel-grafica { margin-top: 20px; padding: 22px; }
 .grafica-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 15px; }
 .grafica-cabecera h2 { margin: 0 0 5px; color: var(--verde-profundo); font-size: 21px; }
 .grafica-cabecera p { margin: 0; color: #71817c; font-size: 13px; }
 .expresion-grafica { padding: 9px 13px; border-radius: 8px; background: #e5f5ed; color: #176044; font: bold 16px Georgia, serif; white-space: nowrap; }
-.barra-herramientas {
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  padding: 10px 12px; border: 1px solid #e0e9e5; border-bottom: 0;
-  border-radius: 10px 10px 0 0; background: #f5f8f7;
-}
+.barra-herramientas { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid #e0e9e5; border-bottom: 0; border-radius: 10px 10px 0 0; background: #f5f8f7; }
 .herramienta-info { display: flex; align-items: center; gap: 8px; color: #61736e; font-size: 12px; }
 .punto-color { width: 10px; height: 10px; border-radius: 50%; background: #16866b; }
 .controles-zoom { display: flex; gap: 6px; }
 .controles-zoom button { min-width: 34px; padding: 7px 10px; background: #e4eee9; }
 .controles-zoom button:hover { background: #cfe4da; }
 #zoom-reset { font-size: 12px; }
-.lienzo-contenedor {
-  width: 100%; height: 590px; overflow: hidden;
-  border: 1px solid #dce6e2; border-radius: 0 0 10px 10px;
-  background: #fff;
-}
+.lienzo-contenedor { width: 100%; height: 590px; overflow: hidden; border: 1px solid #dce6e2; border-radius: 0 0 10px 10px; background: #fff; }
 #plano-cartesiano { display: block; width: 100%; height: 100%; }
 .grafica-pie { display: flex; justify-content: space-between; gap: 10px; padding-top: 10px; color: #71817c; font-size: 12px; }
-.coordenadas { color: #8a9994; }
 
+/* 6. Enlace a GeoGebra, selector de archivo y pie de página. */
 .panel-extra { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 20px; padding: 22px 25px; }
 .panel-extra h2 { margin: 0 0 7px; font-size: 18px; }
 .panel-extra p { margin: 0 0 10px; color: #637771; font-size: 13px; line-height: 1.5; }
@@ -100,14 +89,14 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 #nombre-archivo { color: #71817c; }
 footer { padding: 22px 0 5px; color: #c2dcd4; text-align: center; font-size: 12px; }
 
+/* Adaptación para tabletas y celulares. */
+@media (max-width: 850px) { .resultados { grid-template-columns: 1fr; } }
 @media (max-width: 700px) {
   body { padding: 24px 12px; }
   .panel-generador { padding: 21px 14px; }
   .coeficientes { gap: 9px; }
   .coeficiente { min-width: 0; width: 42%; padding: 13px 8px; }
-  .resultados { grid-template-columns: 1fr; }
-  .grafica-cabecera { align-items: flex-start; flex-direction: column; }
+  .grafica-cabecera, .barra-herramientas { align-items: flex-start; flex-direction: column; }
   .lienzo-contenedor { height: 430px; }
-  .barra-herramientas { align-items: flex-start; flex-direction: column; }
   .panel-extra { align-items: flex-start; flex-direction: column; }
 }
