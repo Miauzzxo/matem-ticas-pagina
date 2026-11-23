@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #2e8b57; /* verde marino */
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 30px 15px;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.subtitulo {
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.coeficientes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.coef {
+  background-color: #ffffff;
+  color: #1b4d33;
+  border: 3px solid #1b4d33;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.numero {
+  color: #2e8b57;
+}
+
+.funcion {
+  font-size: 1.5rem;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+button {
+  background-color: #ffffff;
+  color: #1b4d33;
+  border: 3px solid #1b4d33;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1b4d33;
+  color: #ffffff;
+}
+
+.mensaje {
+  min-height: 24px;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.caja {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 3px solid #1b4d33;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  text-align: left;
+  opacity: 0.5;
+}
+
+.caja h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.caja ul {
+  margin-left: 20px;
+  line-height: 1.7;
+}
+
+/* La caja que corresponde queda resaltada */
+.caja.activa {
+  background-color: #ffffff;
+  color: #1b4d33;
+  opacity: 1;
+}
+
+.geogebra {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.geogebra a {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.geogebra p {
+  margin: 8px 0 15px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.subir {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #1b4d33;
+  border: 3px solid #1b4d33;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.subir:hover {
+  background-color: #1b4d33;
+  color: #ffffff;
+}
+
+.info-archivo a {
+  color: #ffffff;
+}
