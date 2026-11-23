@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clasificador de Funciones</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="contenedor">
+    <h1>Clasificador de Funciones</h1>
+    <p class="subtitulo">Función Lineal y Función Afín · f(x) = bx + c</p>
+
+    <!-- Coeficientes -->
+    <div class="coeficientes">
+      <div class="coef">b = <span id="valorB" class="numero">?</span></div>
+      <div class="coef">c = <span id="valorC" class="numero">?</span></div>
+    </div>
+
+    <p id="funcionActual" class="funcion">f(x) = ?</p>
+
+    <button id="btnGenerar">Generar / Cambiar</button>
+
+    <p id="mensaje" class="mensaje"></p>
+
+    <!-- Caja LINEAL -->
+    <section id="cajaLineal" class="caja">
+      <h2>LINEAL</h2>
+      <ul id="listaLineal">
+        <li>Se muestra cuando c = 0.</li>
+      </ul>
+    </section>
+
+    <!-- Caja AFÍN -->
+    <section id="cajaAfin" class="caja">
+      <h2>AFÍN</h2>
+      <ul id="listaAfin">
+        <li>Se muestra cuando c ≠ 0.</li>
+      </ul>
+    </section>
+
+    <!-- GeoGebra -->
+    <section class="geogebra">
+      <a href="https://www.geogebra.org/classic" target="_blank" rel="noopener">
+        Abrir GeoGebra Clásico
+      </a>
+      <p>Grafica la función generada y descarga el archivo .ggb</p>
+
+      <label for="archivoGgb" class="subir">Subir archivo .ggb</label>
+      <input type="file" id="archivoGgb" accept=".ggb">
+      <p id="infoArchivo" class="info-archivo"></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
