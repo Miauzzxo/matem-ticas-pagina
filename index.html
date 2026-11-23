@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clasificador de funciones</title>
-  <link rel="stylesheet" href="style.css"
+  <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -63,6 +64,18 @@
           <li>Se desplaza verticalmente c unidades respecto de f(x) = bx.</li>
         </ul>
       </article>
+    </section>
+
+
+    <section class="panel-grafica">
+      <div class="grafica-titulo">
+        <div><h2>Gráfica de la función</h2><p>La recta aparecerá aquí cuando generes una función.</p></div>
+        <span id="expresion-grafica" class="expresion-grafica">f(x) = —</span>
+      </div>
+      <div class="lienzo-contenedor">
+        <canvas id="plano-cartesiano" aria-label="Plano cartesiano con la gráfica de la función generada"></canvas>
+      </div>
+      <p class="ayuda-grafica" id="ayuda-grafica">Esperando valores para dibujar la gráfica.</p>
     </section>
 
     <section class="panel-extra">
