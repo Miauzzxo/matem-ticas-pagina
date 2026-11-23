@@ -3,56 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clasificador de Funciones</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Clasificador de funciones</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-
   <main class="contenedor">
-    <h1>Clasificador de Funciones</h1>
-    <p class="subtitulo">Función Lineal y Función Afín · f(x) = bx + c</p>
+    <header class="encabezado">
+      <span class="etiqueta">MATEMÁTICAS · FUNCIONES ALGEBRAICAS</span>
+      <h1>Clasificador de funciones</h1>
+      <p>Genera dos coeficientes y descubre qué tipo de función se forma.</p>
+    </header>
 
-    <!-- Coeficientes -->
-    <div class="coeficientes">
-      <div class="coef">b = <span id="valorB" class="numero">?</span></div>
-      <div class="coef">c = <span id="valorC" class="numero">?</span></div>
-    </div>
-
-    <p id="funcionActual" class="funcion">f(x) = ?</p>
-
-    <button id="btnGenerar">Generar / Cambiar</button>
-
-    <p id="mensaje" class="mensaje"></p>
-
-    <!-- Caja LINEAL -->
-    <section id="cajaLineal" class="caja">
-      <h2>LINEAL</h2>
-      <ul id="listaLineal">
-        <li>Se muestra cuando c = 0.</li>
-      </ul>
+    <section class="panel-generador" aria-labelledby="titulo-generador">
+      <h2 id="titulo-generador">Generador de coeficientes</h2>
+      <div class="coeficientes">
+        <div class="coeficiente">
+          <span class="letra">b</span>
+          <span class="descripcion">Pendiente</span>
+          <output id="valor-b">—</output>
+        </div>
+        <div class="signo">+</div>
+        <div class="coeficiente">
+          <span class="letra">c</span>
+          <span class="descripcion">Término independiente</span>
+          <output id="valor-c">—</output>
+        </div>
+      </div>
+      <p class="formula">f(x) = bx + c</p>
+      <button id="btn-generar" type="button">Generar valores</button>
+      <p class="rango">Los valores aleatorios van desde −3 hasta 3.</p>
+      <p id="mensaje" class="mensaje" aria-live="polite">Presiona el botón para comenzar.</p>
     </section>
 
-    <!-- Caja AFÍN -->
-    <section id="cajaAfin" class="caja">
-      <h2>AFÍN</h2>
-      <ul id="listaAfin">
-        <li>Se muestra cuando c ≠ 0.</li>
-      </ul>
+    <section class="resultados" aria-label="Clasificación de la función">
+      <article class="tarjeta" id="tarjeta-lineal">
+        <div class="tarjeta-cabecera">
+          <h2>Función lineal</h2>
+          <span class="estado" id="estado-lineal">En espera</span>
+        </div>
+        <p class="formula-tarjeta">f(x) = bx</p>
+        <ul>
+          <li>Su término independiente es c = 0.</li>
+          <li>Es una línea recta que pasa por el origen (0, 0).</li>
+          <li>Si b es positivo, es creciente; si b es negativo, es decreciente.</li>
+        </ul>
+      </article>
+
+      <article class="tarjeta" id="tarjeta-afin">
+        <div class="tarjeta-cabecera">
+          <h2>Función afín</h2>
+          <span class="estado" id="estado-afin">En espera</span>
+        </div>
+        <p class="formula-tarjeta">f(x) = bx + c</p>
+        <ul>
+          <li>Su término independiente es c ≠ 0.</li>
+          <li>Corta el eje Y en el punto (0, c).</li>
+          <li>Su inclinación depende del valor de b.</li>
+          <li>Se desplaza verticalmente c unidades respecto de f(x) = bx.</li>
+        </ul>
+      </article>
     </section>
 
-    <!-- GeoGebra -->
-    <section class="geogebra">
-      <a href="https://www.geogebra.org/classic" target="_blank" rel="noopener">
-        Abrir GeoGebra Clásico
-      </a>
-      <p>Grafica la función generada y descarga el archivo .ggb</p>
-
-      <label for="archivoGgb" class="subir">Subir archivo .ggb</label>
-      <input type="file" id="archivoGgb" accept=".ggb">
-      <p id="infoArchivo" class="info-archivo"></p>
+    <section class="panel-extra">
+      <div>
+        <h2>Prueba tu función en GeoGebra</h2>
+        <p>Abre GeoGebra Clásico y escribe la expresión que aparece en el resultado.</p>
+        <a class="enlace" href="https://www.geogebra.org/classic" target="_blank" rel="noopener noreferrer">Abrir GeoGebra Clásico ↗</a>
+      </div>
+      <div class="subida">
+        <label for="archivo-ggb">Seleccionar archivo .ggb</label>
+        <input id="archivo-ggb" type="file" accept=".ggb">
+        <span id="nombre-archivo">Ningún archivo seleccionado</span>
+      </div>
     </section>
+
+    <footer>Proyecto de Matemáticas y Programación · Clasificador de funciones</footer>
   </main>
-
-  <script src="script.js"></script>
 </body>
 </html>
